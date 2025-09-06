@@ -6,7 +6,7 @@ on:
 
 permissions:
   contents: read
-  id-token: write  # لازم هذا عشان OIDC يشتغل
+  id-token: write
 
 jobs:
   build-and-publish:
@@ -21,14 +21,10 @@ jobs:
           python-version: '3.x'
 
       - name: Install build tools
-        run: pip install --upgrade build twine
+        run: pip install --upgrade build
 
       - name: Build package
         run: python -m build
 
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          user: __token__
-          password: ${{ secrets.PYPI_API_TOKEN }}
-          repository_url: https://upload.pypi.org/legacy/
