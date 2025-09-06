@@ -11,7 +11,8 @@ jobs:
       contents: read
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -24,9 +25,6 @@ jobs:
       - name: Build package
         run: python -m build
 
-      - name: Publish to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          user: __token__
-          password: ${{ secrets.PYPI_API_TOKEN }}
-          repository_url: https://upload.pypi.org/legacy/
+      - name: Publish to PyPI using API Token
+        run: |
+          python -m twine upload dist/* -u __token__ -p ${{ secrets.PYPI_API_TOKEN }} --repository-url https://upload.pypi.org/legacy/
