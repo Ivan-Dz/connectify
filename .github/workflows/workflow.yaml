@@ -4,15 +4,16 @@ on:
   release:
     types: [published]
 
+permissions:
+  contents: read
+  id-token: write  # لازم هذا عشان OIDC يشتغل
+
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -25,6 +26,9 @@ jobs:
       - name: Build package
         run: python -m build
 
-      - name: Publish to PyPI using API Token
-        run: |
-          python -m twine upload dist/* -u __token__ -p ${{ secrets.PYPI_API_TOKEN }} --repository-url https://upload.pypi.org/legacy/
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
+          repository_url: https://upload.pypi.org/legacy/
