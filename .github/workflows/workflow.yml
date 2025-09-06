@@ -1,4 +1,4 @@
-name: Publish Python 🐍 distribution 📦 to PyPI
+name: Publish Python 🐍 distribution 📦 to PyPI via OIDC
 
 on:
   release:
@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      # id-token: write
+      id-token: write
 
     steps:
       - name: Checkout repository
@@ -26,9 +26,9 @@ jobs:
       - name: Build package
         run: python -m build
 
-      - name: Publish to PyPI
+      - name: Publish to PyPI using OIDC
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          user: __token__                     
-          password: ${{ secrets.PYPI_API_TOKEN }}
+          user: __token__
+          password: ${{ github.token }}
           repository_url: https://upload.pypi.org/legacy/
