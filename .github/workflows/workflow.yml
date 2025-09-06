@@ -9,10 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      id-token: write
+      # id-token: write
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -20,7 +21,7 @@ jobs:
           python-version: '3.x'
 
       - name: Install build tools
-        run: pip install build twine
+        run: pip install --upgrade build twine
 
       - name: Build package
         run: python -m build
@@ -28,4 +29,6 @@ jobs:
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
+          user: __token__                     
           password: ${{ secrets.PYPI_API_TOKEN }}
+          repository_url: https://upload.pypi.org/legacy/
