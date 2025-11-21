@@ -1,3 +1,24 @@
+[project]
+name = "connectify"
+version = "0.1.1"
+description = "Lightweight toolkit for common web APIs (MVP: OpenWeather)"
+authors = [
+    {name = "Ivan Dz", email = "tomamo748@gmail.com"},
+]
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.8"
+dependencies = [
+    "requests>=2.31.0",
+]
+
+[project.optional-dependencies]
+async = ["aiohttp>=3.8.0"]
+dev = ["pytest>=7.0.0", "black", "ruff"]
+
+[project.scripts]
+connectify = "cli.connectify_cli:main"
+
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=45", "wheel"]
 build-backend = "setuptools.build_meta"
